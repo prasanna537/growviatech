@@ -28,10 +28,10 @@ export function ContactCTA() {
     setStatus('idle')
     setErrorMessage('')
 
-    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY
 
     if (!accessKey) {
-      const errorMsg = 'Web3Forms Access Key (VITE_WEB3FORMS_KEY) is missing. Please check your environment variables.'
+      const errorMsg = 'Web3Forms access key is missing. Please configure your environment variables.'
       console.error(errorMsg)
       setStatus('error')
       setErrorMessage(errorMsg)
