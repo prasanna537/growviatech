@@ -15,7 +15,7 @@ export function ContactCTA() {
     
     try {
       const formData = new FormData(e.currentTarget)
-      formData.append('access_key', '20b12887-adca-4272-931a-51548cbb144f')
+      formData.append('access_key', 'f46c8ffe-769c-4cc8-acca-972ae255f4d7')
       
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
