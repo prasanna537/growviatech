@@ -2,44 +2,84 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { staggerContainer, staggerItem, fadeUp, viewportOnce } from '@/lib/motion'
 
 export function ContactCTA() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    message: '',
+  })
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
-    
+    setStatus('idle')
+    setErrorMessage('')
+
+    const accessKey = import.meta.env.VITE_WEB3FORMS_KEY
+
+    if (!accessKey) {
+      const errorMsg = 'Web3Forms Access Key (VITE_WEB3FORMS_KEY) is missing. Please check your environment variables.'
+      console.error(errorMsg)
+      setStatus('error')
+      setErrorMessage(errorMsg)
+      return
+    }
+
+    // Validate required fields
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+      setStatus('error')
+      setErrorMessage('Please fill in all required fields.')
+      return
+    }
+
+    setStatus('loading')
+
     try {
-      const formData = new FormData(e.currentTarget)
-      formData.append('access_key', 'f46c8ffe-769c-4cc8-acca-972ae255f4d7')
-      
+      const formData = new FormData()
+      formData.append('access_key', accessKey)
+      formData.append('name', form.name)
+      formData.append('email', form.email)
+      formData.append('phone', form.phone)
+      formData.append('company', form.company)
+      formData.append('message', form.message)
+
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(Object.fromEntries(formData))
+        body: formData,
       })
-      
-      const result = await response.json()
-      
-      if (response.ok && result.success) {
-        setSubmitStatus('success')
-        e.currentTarget.reset()
-        setTimeout(() => setSubmitStatus('idle'), 5000)
+
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        setStatus('success')
+        setForm({
+          name: '',
+          email: '',
+          phone: '',
+          company: '',
+          message: '',
+        })
       } else {
-        throw new Error(result.message || 'Submission failed')
+        setStatus('error')
+        setErrorMessage(data.message || 'An error occurred while sending the message.')
       }
-    } catch (error) {
-      setSubmitStatus('error')
-      setTimeout(() => setSubmitStatus('idle'), 5000)
-    } finally {
-      setIsSubmitting(false)
+    } catch (error: any) {
+      console.error('Submission error:', error)
+      setStatus('error')
+      setErrorMessage(error.message || 'Network error. Please try again later.')
     }
   }
 
@@ -114,7 +154,10 @@ export function ContactCTA() {
                 viewport={viewportOnce}
                 transition={{ duration: 0.6 }}
               >
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-5"
+                >
                   <div className="space-y-1">
                     <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
                       Full Name
@@ -124,6 +167,8 @@ export function ContactCTA() {
                       type="text"
                       id="name"
                       name="name"
+                      value={form.name}
+                      onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-current bg-card text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                       placeholder="John Doe"
@@ -139,6 +184,8 @@ export function ContactCTA() {
                       type="email"
                       id="email"
                       name="email"
+                      value={form.email}
+                      onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-xl border border-current bg-card text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                       placeholder="john@example.com"
@@ -154,6 +201,8 @@ export function ContactCTA() {
                       type="tel"
                       id="phone"
                       name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-current bg-card text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                       placeholder="+1 (555) 000-0000"
                     />
@@ -168,6 +217,8 @@ export function ContactCTA() {
                       type="text"
                       id="company"
                       name="company"
+                      value={form.company}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-current bg-card text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                       placeholder="Your Company"
                     />
@@ -181,6 +232,8 @@ export function ContactCTA() {
                       whileFocus={{ scale: 1.01 }}
                       id="message"
                       name="message"
+                      value={form.message}
+                      onChange={handleChange}
                       required
                       rows={4}
                       className="w-full px-4 py-3 rounded-xl border border-current bg-card text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
@@ -191,36 +244,31 @@ export function ContactCTA() {
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <Button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={status === 'loading'}
                       className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-4 font-semibold transition-all duration-300 shadow-md glow-primary-hover"
                     >
-                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                      {status === 'loading' ? 'Sending...' : 'Send Message'}
                     </Button>
                   </motion.div>
 
-                  <AnimatePresence>
-                    {submitStatus === 'success' && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm font-medium"
-                      >
-                        Thanks for reaching out! We&apos;ll get back to you shortly.
-                      </motion.div>
-                    )}
-
-                    {submitStatus === 'error' && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm font-medium"
-                      >
-                        Something went wrong. Please try again.
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {status === 'success' && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-emerald-600 text-sm font-semibold text-center mt-3"
+                    >
+                      Message sent successfully!
+                    </motion.p>
+                  )}
+                  {status === 'error' && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-500 text-sm font-semibold text-center mt-3"
+                    >
+                      {errorMessage}
+                    </motion.p>
+                  )}
                 </form>
               </motion.div>
 
