@@ -46,7 +46,7 @@ export function ContactCTA() {
     }
 
     setStatus('loading')
-    console.log("Web3Forms Key:", process.env.NEXT_PUBLIC_WEB3FORMS_KEY);
+    
 
     try {
       const formData = new FormData()
