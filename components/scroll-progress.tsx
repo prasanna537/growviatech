@@ -4,16 +4,16 @@ import { useScroll, useSpring, motion } from 'framer-motion'
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 200,
-    damping: 30,
-    restDelta: 0.001,
-  })
+  const scaleX = useSpring(scrollYProgress, { stiffness: 200, damping: 30, restDelta: 0.001 })
 
   return (
     <motion.div
-      className="fixed top-0 left-0 right-0 h-[2.5px] bg-primary origin-left z-[100] shadow-[0_0_8px_rgba(var(--color-primary),0.6)]"
-      style={{ scaleX }}
+      id="scroll-bar"
+      className="fixed top-0 left-0 right-0 h-[3px] origin-left z-[100]"
+      style={{
+        scaleX,
+        background: 'linear-gradient(90deg, #1D4ED8, #2563EB, #60A5FA, #10B981)',
+      }}
     />
   )
 }

@@ -1,30 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Menu, X } from 'lucide-react'
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'
-import { mobileMenu } from '@/lib/motion'
 
 const navLinks = [
-  { href: '#home', label: 'Home' },
+  { href: '#home',     label: 'Home' },
+  { href: '#about',    label: 'About' },
+  { href: '#process',  label: 'Process' },
   { href: '#services', label: 'Services' },
-  { href: '#process', label: 'Process' },
-  { href: '#about', label: 'About' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#contact',  label: 'Contact' },
 ]
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { scrollY } = useScroll()
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setScrolled(latest > 20)
-  })
-
-  // Close menu on route change / link click
-  const handleNavClick = () => setIsMenuOpen(false)
+  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 20))
 
   return (
     <motion.header
@@ -32,133 +26,119 @@ export function Header() {
       animate={scrolled ? 'scrolled' : 'top'}
       variants={{
         top: {
-          backgroundColor: 'rgba(239,233,224,0)',
+          backgroundColor: 'rgba(248,250,252,0)',
           backdropFilter: 'blur(0px)',
-          borderBottomColor: 'hsl(36 40% 83% / 0)',
+          borderBottomColor: 'rgba(226,232,240,0)',
           boxShadow: 'none',
         },
         scrolled: {
-          backgroundColor: 'rgba(239,233,224,0.88)',
-          backdropFilter: 'blur(20px)',
-          borderBottomColor: 'hsl(36 40% 83% / 0.6)',
-          boxShadow: '0 1px 24px 0 rgba(0,0,0,0.06)',
+          backgroundColor: 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(24px)',
+          borderBottomColor: 'rgba(226,232,240,1)',
+          boxShadow: '0 4px 24px -4px rgba(15,23,42,0.06)',
         },
       }}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       style={{ borderBottomWidth: '1px', borderBottomStyle: 'solid' }}
     >
-      <nav className="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
+      <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
-        <Link href="#home" className="flex items-center gap-3 hover:opacity-80 transition-opacity group" onClick={handleNavClick}>
-          <motion.img
-            src="/logo.png"
-            alt="GrowviaTech Logo"
-            className="h-8 w-auto object-contain mix-blend-multiply rounded-lg"
-            whileHover={{ scale: 1.04 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-          />
-          <span className="font-bold text-xl text-foreground tracking-tight">GrowviaTech</span>
+        <Link href="#home" className="flex items-center shrink-0" onClick={() => setMenuOpen(false)}>
+          <div className="relative overflow-hidden h-8 w-36">
+            <img
+              src="/logo.png"
+              alt="GrowviaTech Logo"
+              className="absolute w-auto max-w-none h-[220%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-contain"
+            />
+          </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => (
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+          {navLinks.map(link => (
             <Link
               key={link.href}
               href={link.href}
-              className="relative text-sm text-foreground hover:text-primary px-4 py-2 rounded-lg hover:bg-secondary transition-all animated-underline"
+              className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all duration-200"
             >
               {link.label}
             </Link>
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="hidden md:block">
-          <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+        {/* Desktop CTA */}
+        <div className="hidden md:flex items-center gap-3 shrink-0">
+          <motion.div whileHover={{ scale: 1.04, y: -1 }} whileTap={{ scale: 0.97 }}>
             <Link
               href="#contact"
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:shadow-lg glow-primary-hover group"
+              className="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-[0_4px_16px_rgba(37,99,235,0.35)] hover:shadow-[0_6px_24px_rgba(37,99,235,0.45)] transition-shadow"
             >
-              Start a Project
-              <motion.span
-                className="inline-flex"
-                initial={{ x: 0 }}
-                whileHover={{ x: 4 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-              >
-                <ArrowRight className="w-4 h-4" />
-              </motion.span>
+              Get Started
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </motion.div>
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile toggle */}
         <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden w-10 h-10 flex items-center justify-center"
-          aria-label="Toggle mobile menu"
+          onClick={() => setMenuOpen(o => !o)}
+          className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl hover:bg-slate-100 transition-colors text-slate-700"
+          aria-label="Toggle menu"
         >
-          <div className="flex flex-col gap-1.5 w-6">
-            <motion.span
-              className="h-0.5 bg-foreground rounded-full block"
-              animate={isMenuOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-            />
-            <motion.span
-              className="h-0.5 bg-foreground rounded-full block"
-              animate={isMenuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-              transition={{ duration: 0.2 }}
-            />
-            <motion.span
-              className="h-0.5 bg-foreground rounded-full block"
-              animate={isMenuOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-            />
-          </div>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={menuOpen ? 'x' : 'm'}
+              initial={{ rotate: -90, opacity: 0, scale: 0.8 }}
+              animate={{ rotate: 0, opacity: 1, scale: 1 }}
+              exit={{ rotate: 90, opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.18 }}
+            >
+              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </motion.div>
+          </AnimatePresence>
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
-        {isMenuOpen && (
+        {menuOpen && (
           <motion.div
-            key="mobile-menu"
-            className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl overflow-hidden"
-            variants={mobileMenu}
-            initial="closed"
-            animate="open"
-            exit="closed"
+            key="mobile"
+            className="md:hidden border-t border-slate-100 bg-white/96 backdrop-blur-xl overflow-hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="mx-auto max-w-7xl px-6 py-6 flex flex-col gap-2">
+            <div className="mx-auto max-w-7xl px-6 py-5 space-y-1">
               {navLinks.map((link, i) => (
                 <motion.div
                   key={link.href}
-                  initial={{ opacity: 0, x: -16 }}
+                  initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 + 0.05, duration: 0.3 }}
+                  transition={{ delay: i * 0.04 + 0.04 }}
                 >
                   <Link
                     href={link.href}
-                    onClick={handleNavClick}
-                    className="block text-sm text-foreground hover:text-primary px-4 py-3 rounded-xl hover:bg-secondary transition-all"
+                    onClick={() => setMenuOpen(false)}
+                    className="block px-4 py-3 text-sm font-medium text-slate-700 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
                   >
                     {link.label}
                   </Link>
                 </motion.div>
               ))}
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.3 }}
+                transition={{ delay: 0.26 }}
+                className="pt-3 border-t border-slate-100"
               >
                 <Link
                   href="#contact"
-                  onClick={handleNavClick}
-                  className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-full font-semibold hover:bg-primary/90 transition-all w-full justify-center mt-2"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 text-white px-6 py-3.5 rounded-full font-bold text-sm shadow-lg shadow-blue-600/20 w-full"
                 >
-                  Start a Project
-                  <ArrowRight className="w-4 h-4" />
+                  Get Started <ArrowRight className="w-4 h-4" />
                 </Link>
               </motion.div>
             </div>

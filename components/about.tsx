@@ -1,107 +1,95 @@
 'use client'
 
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, Target, TrendingUp, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { fadeUp, slideRight, staggerContainer, staggerItem, cardHover, viewportOnce } from '@/lib/motion'
 
 const values = [
-  {
-    title: 'Innovation',
-    description: 'Cutting-edge technology and creative solutions'
-  },
-  {
-    title: 'Quality',
-    description: 'Meticulous attention to every detail'
-  },
-  {
-    title: 'Partnership',
-    description: 'Collaborative approach to your success'
-  },
-  {
-    title: 'Excellence',
-    description: 'Premium standards in everything we do'
-  }
+  'Performance-first architecture',
+  'Clean, typed codebase',
+  'Pixel-perfect design',
+  'Transparent communication',
+  'On-time delivery',
+  'Long-term partnership',
 ]
+
+const vp = { once: true, margin: '-60px' }
 
 export function About() {
   return (
-    <section id="about" className="py-12 md:py-24 relative overflow-hidden" style={{ backgroundColor: '#EFE9E0' }}>
-      {/* Background decoration */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute right-0 top-1/4 w-96 h-96 rounded-full opacity-40"
-          style={{ background: 'radial-gradient(circle, hsl(21 54% 54% / 0.08) 0%, transparent 70%)' }}
+    <section id="about" className="py-20 md:py-24 bg-[#F1F5F9] relative overflow-hidden">
+      {/* BG blob */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute left-1/2 -translate-x-1/2 -top-64 w-[700px] h-[700px] rounded-full opacity-40"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 65%)' }}
         />
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 relative z-10">
-        <div className="space-y-12 md:space-y-16">
-          {/* Header */}
-          <motion.div
-            className="max-w-4xl"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            <motion.div variants={staggerItem} className="inline-block mb-6">
-              <span className="px-4 py-2 bg-secondary border border-border rounded-full text-sm font-medium text-muted-foreground">
-                About Us
-              </span>
-            </motion.div>
-            <motion.h2
-              variants={staggerItem}
-              className="text-5xl md:text-6xl font-bold text-foreground mb-8 text-balance leading-tight"
-            >
-              Technology with <span className="text-primary italic">Purpose</span>
-            </motion.h2>
-            <motion.p
-              variants={staggerItem}
-              className="text-xl text-muted leading-relaxed text-pretty font-light max-w-2xl"
-            >
-              At Growvia, we believe that technology should empower businesses to achieve their goals. With over a decade of combined experience, our team transforms digital challenges into opportunities for growth and innovation.
-            </motion.p>
-          </motion.div>
+      <div className="mx-auto max-w-4xl px-6 relative z-10">
+        <motion.div
+          className="text-center space-y-10"
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={vp}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {/* Headline & Intro */}
+          <div className="space-y-4">
+            <span className="section-badge section-badge-blue">About Growvia</span>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight max-w-2xl mx-auto">
+              Building <span className="gradient-text">digital futures</span> with precision.
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+              We are a premium digital engineering studio specializing in modern web development, scalable SaaS architectures, and AI automation — transforming complex business challenges into elegant, high-performing digital products.
+            </p>
+          </div>
 
-          {/* Values Grid */}
-          <motion.div
-            className="grid md:grid-cols-2 gap-6"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={viewportOnce}
-          >
-            {values.map((value, i) => (
+          {/* Checklist */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm">
+            {values.map((v, i) => (
               <motion.div
-                key={value.title}
-                variants={staggerItem}
-                whileHover="hover"
-                initial="rest"
-                animate="rest"
+                key={v}
+                className="flex items-center gap-3"
+                initial={{ opacity: 0, x: -12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={vp}
+                transition={{ delay: i * 0.05, duration: 0.4 }}
               >
-                <motion.div
-                  className="group relative p-8 bg-card border border-border rounded-2xl overflow-hidden card-gradient-border cursor-default"
-                  variants={cardHover}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative flex items-start gap-5">
-                    <motion.div
-                      className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-white transition-all duration-300"
-                      whileHover={{ rotate: [0, -8, 8, 0] }}
-                      transition={{ duration: 0.4 }}
-                    >
-                      <CheckCircle2 className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
-                    </motion.div>
-                    <div>
-                      <h3 className="font-bold text-lg text-foreground mb-2">{value.title}</h3>
-                      <p className="text-muted leading-relaxed">{value.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                <span className="text-sm font-semibold text-slate-700">{v}</span>
               </motion.div>
             ))}
+          </div>
+
+          {/* Mission & Vision */}
+          <div className="grid sm:grid-cols-2 gap-6 text-left max-w-3xl mx-auto">
+            {[
+              { icon: Target, title: 'Our Mission', desc: 'Empower businesses through innovative technology that drives measurable, sustainable growth.' },
+              { icon: TrendingUp, title: 'Our Vision', desc: 'To be the global standard for premium, high-performance digital engineering.' },
+            ].map((card) => {
+              const Icon = card.icon
+              return (
+                <div
+                  key={card.title}
+                  className="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm hover:border-blue-200 hover:shadow-md transition-all group"
+                >
+                  <div className="icon-box icon-box-blue w-10 h-10 mb-4 group-hover:bg-blue-600 group-hover:border-blue-600 group-hover:text-white transition-all">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h4 className="font-bold text-slate-900 mb-2">{card.title}</h4>
+                  <p className="text-sm text-slate-600 leading-relaxed">{card.desc}</p>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* CTA */}
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.97 }} className="inline-block">
+            <a href="#contact" className="btn-primary">
+              Work With Us
+              <ArrowRight className="w-4 h-4" />
+            </a>
           </motion.div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

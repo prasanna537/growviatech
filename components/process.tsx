@@ -1,135 +1,126 @@
 'use client'
 
-import { Compass, Brain, Palette, Rocket, TrendingUp } from 'lucide-react'
+import { Compass, Brain, Palette, Rocket, TrendingUp, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
-import { staggerContainer, staggerItem, cardHover, viewportOnce } from '@/lib/motion'
 
 const steps = [
-  {
-    number: '01',
-    icon: Compass,
-    title: 'Discover',
-    description: 'We understand your business, goals, and challenges through in-depth discovery sessions.'
-  },
-  {
-    number: '02',
-    icon: Brain,
-    title: 'Strategize',
-    description: 'We develop a comprehensive strategy and roadmap tailored to your unique needs.'
-  },
-  {
-    number: '03',
-    icon: Palette,
-    title: 'Design & Develop',
-    description: 'Our team creates beautiful designs and builds robust solutions with cutting-edge technology.'
-  },
-  {
-    number: '04',
-    icon: Rocket,
-    title: 'Launch',
-    description: 'We launch your project with precision and provide full support for a smooth rollout.'
-  },
-  {
-    number: '05',
-    icon: TrendingUp,
-    title: 'Grow',
-    description: 'We continue to optimize and enhance your solution to maximize growth and success.'
-  }
+  { number: '01', icon: Compass,    title: 'Discover',         description: 'Deep-dive sessions to understand your business goals, technical landscape, and user needs.' },
+  { number: '02', icon: Brain,      title: 'Strategize',       description: 'A comprehensive roadmap with clear milestones, technology choices, and delivery timelines.' },
+  { number: '03', icon: Palette,    title: 'Design & Build',   description: 'Pixel-perfect UI and robust engineering using modern, battle-tested tech stacks.' },
+  { number: '04', icon: Rocket,     title: 'Launch',           description: 'Zero-downtime precision deployment with thorough QA and smooth client handoff.' },
+  { number: '05', icon: TrendingUp, title: 'Grow',             description: 'Ongoing optimization, analytics-driven improvements, and long-term partnership.' },
 ]
+
+const vp = { once: true, margin: '-60px' }
 
 export function Process() {
   return (
-    <section id="process" className="py-12 md:py-24 relative overflow-hidden" style={{ backgroundColor: '#EFE9E0' }}>
-      {/* Background blobs */}
+    <section id="process" className="py-20 md:py-24 bg-white relative overflow-hidden">
+      {/* BG */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute left-0 bottom-0 w-96 h-96 rounded-full opacity-30"
-          style={{ background: 'radial-gradient(circle, hsl(21 54% 54% / 0.06) 0%, transparent 70%)' }}
+        <div className="absolute right-0 bottom-0 w-[600px] h-[600px] rounded-full opacity-30"
+          style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)' }}
         />
       </div>
 
       <div className="mx-auto max-w-7xl px-6 relative z-10">
-        {/* Section Header */}
+        {/* Header */}
         <motion.div
-          className="max-w-3xl mb-12"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
+          className="max-w-3xl mx-auto text-center mb-16"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={vp}
+          transition={{ duration: 0.6 }}
         >
-          <motion.div variants={staggerItem} className="inline-block mb-6">
-            <span className="px-4 py-2 bg-secondary border border-border rounded-full text-sm font-medium text-muted-foreground">
-              Our Approach
-            </span>
-          </motion.div>
-          <motion.h2 variants={staggerItem} className="text-5xl md:text-6xl font-bold text-foreground mb-8 text-balance">
-            Our <span className="text-primary">Process</span>
-          </motion.h2>
-          <motion.p variants={staggerItem} className="text-lg text-muted leading-relaxed text-pretty font-light">
-            A structured approach to delivering exceptional results every time.
-          </motion.p>
+          <span className="section-badge section-badge-blue mb-4">Our Methodology</span>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-5 tracking-tight">
+            How We <span className="gradient-text">Work</span>
+          </h2>
+          <p className="text-lg text-slate-600">
+            A proven, structured approach to delivering exceptional digital products — on time, every time.
+          </p>
         </motion.div>
 
-        {/* Steps Grid */}
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-5 gap-8"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          {steps.map((step, index) => {
+        {/* Steps */}
+        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-5">
+          {steps.map((step, i) => {
             const Icon = step.icon
             return (
               <motion.div
                 key={step.number}
                 className="relative group"
-                variants={staggerItem}
-                whileHover="hover"
-                initial="rest"
-                animate="rest"
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={vp}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               >
                 <motion.div
-                  className="relative p-8 bg-card border border-border rounded-2xl h-full overflow-hidden card-gradient-border cursor-default"
-                  variants={cardHover}
+                  className="card-premium bg-white p-6 h-full overflow-hidden relative"
+                  whileHover={{ y: -6 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 22 }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="relative">
-                    <motion.div
-                      className="text-2xl font-bold text-primary/30 mb-4"
-                      variants={{
-                        rest: { y: 0, scale: 1 },
-                        hover: { y: -2, scale: 1.05, color: 'rgba(217, 119, 6, 0.5)' }
-                      }}
-                    >
-                      {step.number}
-                    </motion.div>
-                    <motion.div
-                      className="mb-6 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center"
-                      whileHover={{ scale: 1.15, backgroundColor: 'hsl(21 54% 54%)' }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                    >
-                      <Icon className="w-7 h-7 text-primary group-hover:text-white transition-colors duration-300" />
-                    </motion.div>
-                    <h3 className="font-bold text-xl text-foreground mb-3">{step.title}</h3>
-                    <p className="text-muted leading-relaxed text-sm">{step.description}</p>
+                  {/* Step number watermark */}
+                  <div className="absolute top-3 right-4 text-5xl font-black text-slate-100 group-hover:text-blue-50 transition-colors select-none leading-none">{step.number}</div>
+
+                  {/* Hover accent */}
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-300 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-b-[1.5rem]" />
+
+                  <div className="relative z-10">
+                    <div className="icon-box icon-box-blue w-12 h-12 mb-5 group-hover:bg-blue-600 group-hover:border-blue-600 group-hover:text-white transition-all duration-300">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="font-bold text-lg text-slate-900 mb-2">{step.title}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">{step.description}</p>
                   </div>
                 </motion.div>
 
-                {/* Connection line - hidden on mobile and last item */}
-                {index < steps.length - 1 && (
-                  <motion.div
-                    className="hidden lg:block absolute top-1/3 right-0 w-6 h-0.5 transform translate-x-full z-20"
-                    style={{ background: 'linear-gradient(to right, hsl(21 54% 54% / 0.3), transparent)' }}
-                    initial={{ scaleX: 0, originX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={viewportOnce}
-                    transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
-                  />
+                {/* Connector arrow */}
+                {i < steps.length - 1 && (
+                  <div className="hidden lg:flex absolute top-1/3 right-0 translate-x-[55%] z-10 items-center">
+                    <div className="w-5 h-px bg-slate-300" />
+                    <div className="w-1.5 h-1.5 border-t border-r border-slate-300 rotate-45 -ml-px" />
+                  </div>
                 )}
               </motion.div>
             )
           })}
+        </div>
+
+        {/* CTA Banner */}
+        <motion.div
+          className="mt-20 relative rounded-3xl overflow-hidden"
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={vp}
+          transition={{ delay: 0.3, duration: 0.7 }}
+        >
+          <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-800 p-10 md:p-14">
+            {/* Dot grid overlay */}
+            <div className="absolute inset-0 opacity-10"
+              style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '24px 24px' }}
+            />
+            {/* Emerald glow accent */}
+            <div className="absolute top-6 right-8 w-24 h-24 rounded-full bg-emerald-400/20 blur-2xl" />
+
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <p className="text-xs font-bold text-blue-200 uppercase tracking-widest mb-2">Ready to start?</p>
+                <h3 className="text-2xl md:text-3xl font-extrabold text-white mb-2">
+                  Let&apos;s build something extraordinary.
+                </h3>
+                <p className="text-blue-100">Your vision + our expertise = measurable results.</p>
+              </div>
+              <motion.a
+                href="#contact"
+                className="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-4 rounded-full hover:bg-blue-50 transition-colors shadow-xl shrink-0 text-sm"
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+              >
+                Get a Free Consultation
+                <ArrowRight className="w-4 h-4" />
+              </motion.a>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
