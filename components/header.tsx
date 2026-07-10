@@ -26,16 +26,16 @@ export function Header() {
       animate={scrolled ? 'scrolled' : 'top'}
       variants={{
         top: {
-          backgroundColor: 'rgba(248,250,252,0)',
-          backdropFilter: 'blur(0px)',
-          borderBottomColor: 'rgba(226,232,240,0)',
-          boxShadow: 'none',
+          backgroundColor: 'rgba(255,255,255,0.9)',
+          backdropFilter: 'blur(12px)',
+          borderBottomColor: 'rgba(226,232,240,1)',
+          boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
         },
         scrolled: {
-          backgroundColor: 'rgba(255,255,255,0.92)',
+          backgroundColor: 'rgba(255,255,255,0.98)',
           backdropFilter: 'blur(24px)',
           borderBottomColor: 'rgba(226,232,240,1)',
-          boxShadow: '0 4px 24px -4px rgba(15,23,42,0.06)',
+          boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)',
         },
       }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -43,8 +43,8 @@ export function Header() {
     >
       <nav className="mx-auto max-w-7xl px-6 h-16 flex items-center justify-between gap-6">
         {/* Logo */}
-        <Link href="#home" className="flex items-center shrink-0" onClick={() => setMenuOpen(false)}>
-          <div className="relative overflow-hidden h-8 w-36">
+        <Link href="#home" className="inline-flex items-center shrink-0" onClick={() => setMenuOpen(false)}>
+          <div className="relative overflow-hidden h-6 w-28">
             <img
               src="/logo.png"
               alt="GrowviaTech Logo"

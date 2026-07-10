@@ -60,7 +60,7 @@ export function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-2 space-y-6">
-            <Link href="#home" className="inline-flex items-center bg-white px-4 py-2.5 rounded-2xl border border-slate-800 shadow-sm w-fit overflow-hidden">
+            <Link href="#home" className="inline-flex items-center bg-white px-4 py-2.5 rounded-full border border-slate-800 shadow-sm w-fit overflow-hidden">
               <div className="relative overflow-hidden h-6 w-28">
                 <img
                   src="/logo.png"
