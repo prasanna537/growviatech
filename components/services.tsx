@@ -228,7 +228,7 @@ export function Services() {
                   <div className="w-12 h-12 icon-box icon-box-blue flex-shrink-0">
                     <selected.icon className="w-6 h-6" />
                   </div>
-                  <div>
+                  <div className="pr-12">
                     <p className="text-xs font-bold text-blue-600 uppercase tracking-widest mb-1">{selected.details.subTitle}</p>
                     <h3 className="text-2xl font-extrabold text-slate-900">{selected.title}</h3>
                   </div>
