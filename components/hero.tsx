@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { ArrowRight, ChevronDown, Sparkles, TrendingUp, Users, Clock } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
 
 const stats = [
   { value: '150+', label: 'Projects Delivered', icon: TrendingUp },
@@ -12,11 +12,11 @@ const stats = [
 
 
 
-const stagger = {
+const stagger: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.13, delayChildren: 0.15 } },
 }
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 36 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] } },
 }

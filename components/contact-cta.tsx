@@ -159,8 +159,8 @@ export function ContactCTA() {
                       {/* Name + Email */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                          { id: 'name',  type: 'text',  label: 'Full Name *',  placeholder: 'John Smith', required: true },
-                          { id: 'email', type: 'email', label: 'Email *',       placeholder: 'john@co.com', required: true },
+                          { id: 'name',  type: 'text',  label: 'Full Name *',  placeholder: 'Rahul Kumar', required: true },
+                          { id: 'email', type: 'email', label: 'Email *',       placeholder: 'hellogrowviatech@gmail.com', required: true },
                         ].map(f => (
                           <div key={f.id}>
                             <label htmlFor={f.id} className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{f.label}</label>
@@ -176,7 +176,7 @@ export function ContactCTA() {
 
                       <div>
                         <label htmlFor="phone" className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Phone</label>
-                        <input id="phone" name="phone" type="tel" placeholder="+1 (555) 000-0000"
+                        <input id="phone" name="phone" type="tel" placeholder="+91 98765 43210"
                           className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:bg-white transition-all"
                         />
                       </div>
