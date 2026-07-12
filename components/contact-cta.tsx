@@ -5,7 +5,7 @@ import { ArrowRight, Mail, Phone, MapPin, CheckCircle2, Loader2 } from 'lucide-r
 import { motion, AnimatePresence } from 'framer-motion'
 
 const contactInfo = [
-  { icon: Mail,   label: 'Email',  value: 'hello@growvia.tech',  href: 'mailto:hello@growvia.tech' },
+  { icon: Mail,   label: 'Email',  value: 'hellogrowviatech@gmail.com',  href: 'mailto:hellogrowviatech@gmail.com' },
   { icon: Phone,  label: 'Phone',  value: '+91 88255 61687',      href: 'tel:+918825561687' },
   { icon: MapPin, label: 'Headquarters', value: 'Coimbatore, Tamilnadu', href: '#' },
 ]
